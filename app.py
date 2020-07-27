@@ -19,7 +19,7 @@ class APP:
     def kmeans_clustering(self, x, max_clusters=20):
         return _kmeans_clustering(x, max_clusters)
 
-    def clustering_with_path_and_code(self, path_list, x, clustering_type, **kwargs):
+    def assign_labels(self, path_list, x, clustering_type, **kwargs):
         cluster_labels = self.clustering(x, clustering_type, **kwargs)
 
         res = dict()
@@ -34,7 +34,7 @@ class APP:
 
         return res 
 
-    def save_images_by_clusters(self, dir_path, res, num_imgs=5, output_size=(416, 416)):
+    def save_labeled_images(self, dir_path, res, num_imgs=5, output_size=(416, 416)):
         assert num_imgs >= 1
         logging.info('[APP] save images by res')
 
@@ -43,7 +43,7 @@ class APP:
             pathes = res.get(key_)
 
             for i, path in enumerate(pathes):
-                logging.debug('[APP] num : {}'.format())
+                logging.debug('[APP] num : {}'.format(i))
                 img = Image.open(path).resize(output_size)
                 img_path = 'cluster_' + str(key_) + '_' + str(i) + '.jpg'
                 save_path = os.path.join(dir_path, img_path)
