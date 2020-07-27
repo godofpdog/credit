@@ -40,13 +40,18 @@ class APP:
 
         for key_ in res.keys():
             logging.info('[APP] process cluster : {}'.format(key_))
-            pathes = res.get(key_)
 
+            # create cluster directory
+            cluster_dir = os.path.join(dir_path, 'cluster_' + str(key_)) 
+            _mkdir(cluster_dir)
+
+            pathes = res.get(key_)
+        
             for i, path in enumerate(pathes):
                 logging.debug('[APP] num : {}'.format(i))
                 img = Image.open(path).resize(output_size)
-                img_path = 'cluster_' + str(key_) + '_' + str(i) + '.jpg'
-                save_path = os.path.join(dir_path, img_path)
+                img_path = str(i) + '.jpg'
+                save_path = os.path.join(cluster_dir, img_path)
                 img.save(save_path)
 
         return None
@@ -69,6 +74,11 @@ class APP:
 
 def _argmax(list_):
     return max(range(len(list_)), key=list_.__getitem__)
+
+
+def _mkdir(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
 
 
 def _kmeans_clustering(x, max_clusters=20):
